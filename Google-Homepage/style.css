@@ -84,6 +84,10 @@ cursor: pointer;  }
     padding: 0;
     margin: 0;
     color: rgba(0,0,0,.9);
+    outline: none;
+    font-size: 16px;
+    margin-top: -5px;
+    font-family: arial, sans-serif;
     flex:1;  }
 .search-voice-icon-container{
     display: flex;
