@@ -6,7 +6,7 @@ This project is designed to fill in the gap for people who are trying to hack it
 
 This repository gathers my various projects for this course
 
-- [Google Homepage](Google-Homepage/index.html)
+- [Google Homepage](Google-Homepage/)
 - ~~Rock Paper Scissors~~
 - ~~Etch-a-Sketch~~
 - ~~Calculator~~
