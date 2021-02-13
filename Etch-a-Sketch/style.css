@@ -1,0 +1,81 @@
+body{
+    background-color: #DDDDDD;}
+h1{
+    text-align: center;}
+.buttons{
+    display: flex;
+    justify-content: center;}
+.button{
+    margin: 0 5px;}
+#grid-container{
+    display: grid;
+    width: 500px;
+    height: 500px;
+    border: 1px solid black;
+    margin: 2rem auto;
+    user-select: none;}
+.grid-element{
+    border: 1px solid black;}
+.range-container{
+    position: relative;}
+#size-info{
+    position: absolute;
+    bottom: 20px;
+    left: 2px;
+    font-size: .9em;
+    opacity: .7;
+}
+
+
+input[type="color"] {
+	-webkit-appearance: none;
+	border: none;
+	width: 32px;
+    height: 16px;
+    background-color:transparent;
+    transform: scale(1.1);}
+input[type="color"]::-webkit-color-swatch-wrapper {
+	padding: 0;}
+input[type="color"]::-webkit-color-swatch {
+	border: none;}
+
+
+
+/* ICONS FROM CSS.GG */
+/* - - - - - - - - - */
+
+/* erase */
+.gg-erase {
+    opacity: .25;
+    box-sizing: border-box;
+    position: relative;
+    display: block;
+    transform: scale(1.1);
+    width: 22px;
+    height: 18px}
+.gg-erase.enabled{
+        opacity: 1;}
+.gg-erase::after,
+.gg-erase::before {
+    content: "";
+    display: block;
+    box-sizing: border-box;
+    position: absolute}
+.gg-erase::before {
+    width: 6px;
+    height: 14px;
+    border-bottom:
+        4px solid transparent;
+    border-radius: 1px;
+    box-shadow:
+        0 0 0 2px,
+        inset 0 -2px 0 0;
+    left: 7px;
+    top: 0px;
+    transform: rotate(45deg)}
+.gg-erase::after {
+    background: currentColor;
+    width: 20px;
+    height: 2px;
+    bottom: 2px;
+    border-radius: 20px}

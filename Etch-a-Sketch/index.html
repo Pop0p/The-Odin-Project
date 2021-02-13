@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title></title>
+  <meta name="author" content="">
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link href="style.css" rel="stylesheet">
+</head>
+
+<body>
+    <h1>Etch-a-sketch</h1>
+    <div class="buttons">
+    <div class="gg-erase button" onclick="ToggleErase()" id="erase-btn" title="Erase"></div>
+    <input class="button" id="color-btn" type="color" value="#999" onchange="SetColor(this.value)" title="Color">
+    <div class="button range-container">
+    <input type="range" id="size-btn" min="1" max="32" value="32" step="1" title="Square Size">
+    <output id="size-info"></output>
+  </div>
+  </div>
+  </div>
+    <div id="grid-container"></div>
+  <script src="script.js"></script>
+</body>
+
+</html
