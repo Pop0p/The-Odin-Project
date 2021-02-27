@@ -9,5 +9,6 @@ This repository gathers my various projects for this course
 - [Google Homepage](Google-Homepage/)
 - [Rock Paper Scissors](Rock-Paper-Scissors/)
 - [Etch-a-Sketch](Etch-a-Sketch/)
-- ~~Calculator~~
+- [Calculator](Calculator/)
+
 
