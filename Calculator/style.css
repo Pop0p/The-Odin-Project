@@ -18,18 +18,18 @@
     margin: 50px auto;
     background-color: var(--calculator);
 }
-#calculator-screen{
-    height: 40px;
+#calculator-screen {
+    min-height: 40px;
     padding: 5px 10px 20px 20px;
     border-radius: 5px;
     background-color: var(--calculator);
-    font-size: 29px;
+    font-size: 30px;
     text-align: right;
+    position: relative;
     word-wrap: break-word;
     word-break: break-all;
-    position: relative;
 }
-#history{
+#elements{
     font-size: .45em;
     color: var(--font-history);
     margin-bottom: 5px;;
@@ -62,12 +62,12 @@
     font-size: larger;}
 .btn-green{
     background-color: var(--btn-green);}
-    .btn-green:hover{
-        background-color: var(--btn-green-hover);
-    }
-    .btn-green:active{
-        background-color: var(--btn-green-active);
-    }
+.btn-green:hover{
+    background-color: var(--btn-green-hover);
+}
+.btn-green:active{
+    background-color: var(--btn-green-active);
+}
 
 .btn.disabled{
     opacity: .5;

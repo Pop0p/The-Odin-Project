@@ -1,142 +1,115 @@
 const numbers = document.querySelectorAll(".btn[data-number]");
+const numberZero = document.querySelector(".btn[data-number='0']");
 const operators = document.querySelectorAll(".btn[data-operator]");
+
+const equal = document.querySelector(".btn[data-equal]");
 const pi = document.querySelector(".btn[data-pi]");
 const sqrt = document.querySelector(".btn[data-sqrt]");
 const reset = document.querySelector(".btn[data-reset]");
 const back = document.querySelector(".btn[data-back]");
-const equal = document.querySelector(".btn[data-equal]");
-const btnZero = document.querySelector(".btn[data-number='0']");
 const decimal = document.querySelector(".btn[data-decimal]");
 
 
 const screenC = document.querySelector("#current");
-const screenH = document.querySelector("#history");
+const screenE = document.querySelector("#elements");
 
-let currentOperand = "";
-let history = [];
-let currentOperator = "";
-let hasSqrt = false;
 
-numbers.forEach((btn) => 
-    btn.addEventListener("click", () => SetOperand(btn.dataset.number)));
 
-operators.forEach((btn) => 
-    btn.addEventListener("click", () => SetOperator(btn.dataset.operator)));
 
-equal.addEventListener("click", () => 
-{   
-    if (history.length == 0)
-        return;
 
-    let previousResult = GetResult();
-    let newResult = DoCalculate(previousResult, currentOperator, currentOperand);
-    history = [];
-    SendToHistory(previousResult);
-    SendToHistory(currentOperator);
-    SendToHistory(currentOperand);
-    SendToHistory("=");
-    ShowAtCurrent(newResult);
-    
-});
-reset.addEventListener("click", () => 
-{   
-    history = [];
-    currentOperand = "";
-    currentOperator = "";
+numbers.forEach((btn) => btn.addEventListener("click", () => AppendToCurrentValue(btn.dataset.number)));
+operators.forEach((btn) => btn.addEventListener("click", () => SetOperator(btn.dataset.operator)));
+
+equal.addEventListener("click", () => {   
+    if (elements.length == 0) return;
+    if (isNaN(elements[elements.length - 1]))
+        elements.push(+currentValue);
+   let r = GetResult();
+   DisplayToCurrentScreen(r);
+   RefreshOperationElementsScreen();
+   currentValue = r;
+})
+pi.addEventListener("click", () => {   
+    currentValue = "";
+    AppendToCurrentValue(round(Math.PI));
+})
+sqrt.addEventListener("click", () => {   
+    currentValue = round(Math.sqrt(currentValue));
+    DisplayToCurrentScreen(currentValue);
+})
+
+reset.addEventListener("click", () => {   
+    elements = [];
+    currentValue = "";
+    latestOperator = "";
     screenC.textContent = 0;
-    screenH.textContent = "";
+    screenE.textContent = "";
     numbers.forEach((btn) => btn.classList.remove("disabled"));
     equal.classList.remove("disabled");
-    pi.classList.remove("disabled");       
-    back.classList.remove("disabled");       
-    decimal.classList.remove("disabled");  
 });
-back.addEventListener("click", () => 
-{   
-    if (currentOperand.length > 0)
-    currentOperand = currentOperand.slice(0, -1);
+back.addEventListener("click", () => {   
+    if (currentValue.length > 0)
+    currentValue = currentValue.slice(0, -1);
 
-    if (currentOperand.length == 0){
-        currentOperand = "";
-        ShowAtCurrent("0");
+    if (currentValue.length == 0){
+        currentValue = "";
+        DisplayToCurrentScreen("0");
     } 
     else 
-        ShowAtCurrent(currentOperand);
+        DisplayToCurrentScreen(currentValue);
 });
-pi.addEventListener("click", () => {currentOperand = ""; SetOperand(Math.PI) } );
-sqrt.addEventListener("click", () => 
-    {
-        let tmp = screenC.textContent;
-        currentOperand = "";
-        SetOperand(Math.sqrt(tmp))
-        history = [];
-        SendToHistory("sqrt(" + tmp + ")");
-        hasSqrt = true;
-        numbers.forEach((btn) => btn.classList.add("disabled"));
-        equal.classList.add("disabled");
-        pi.classList.add("disabled");       
-        back.classList.add("disabled");       
-        decimal.classList.add("disabled");       
-    });
 
 
+decimal.addEventListener("click", () => 
+{   
+    if (currentValue.indexOf(".") > -1) return;
+    if (currentValue == "")
+        AppendToCurrentValue("0");
+    AppendToCurrentValue(".");
+});
 
-function SetOperand(nmb){
-    btnZero.classList.remove("disabled");
-    currentOperand += nmb;
-    ShowAtCurrent(currentOperand);
+let latestOperator = "";
+let currentValue = "";
+let elements = [];
+
+function AppendToCurrentValue(val){
+    numberZero.classList.remove("disabled");
+    currentValue += val;
+    DisplayToCurrentScreen(currentValue);
 }
+function DisplayToCurrentScreen(val) { screenC.textContent = +val; }
+
+
 function SetOperator(opr){
-    if (currentOperand == "" && history.length > 0) return;
-    if (currentOperand == "" && history.length == 0) currentOperand = 0;
+    if (currentValue == "" && elements.length == 0) 
+        currentValue = "0";
 
-    if (history.indexOf("=") != -1){
-        currentOperand = screenC.textContent;
-        history = []
-    }
-    if (hasSqrt){
-        currentOperand = screenC.textContent;
-        history = []
-        hasSqrt = false;
-        numbers.forEach((btn) => btn.classList.remove("disabled"));
-        equal.classList.remove("disabled");
-        pi.classList.remove("disabled");       
-        back.classList.remove("disabled");       
-        decimal.classList.remove("disabled");    
-    }
+    if (isNaN(elements[elements.length - 1]))
+        elements.push(+currentValue);
+    elements.push(opr);
+    currentValue = "0";
     
-    SendToHistory(currentOperand);
-    SendToHistory(opr);
-    if (currentOperator != "")
-        ShowAtCurrent(GetResult());
+    DisplayToCurrentScreen(currentValue);
+    RefreshOperationElementsScreen();
+
+    latestOperator = opr;
+
+     if (opr == "/")
+        numberZero.classList.add("disabled");
     else
-        ShowAtCurrent(currentOperand);
-
-    currentOperand = "";
-    currentOperator = opr;
-
-    if (opr == "/")
-        btnZero.classList.add("disabled");
-    else
-        btnZero.classList.remove("disabled");
-
+        numberZero.classList.remove("disabled");
 }
-function SendToHistory(unit){  
-    if (!isNaN(unit)) unit = round(unit);
-    history.push(unit);
+function RefreshOperationElementsScreen(){  
+    screenE.textContent = "";
+    elements.forEach((el) => screenE.textContent += el + " ");
+}
 
-    screenH.textContent = "";
-    history.forEach((el) => screenH.textContent += el + " ");
-}
-function ShowAtCurrent(unit){
-    screenC.textContent = round(unit);
-}
+
 function GetResult(){
-    let results = JSON.parse(JSON.stringify(history));
+    let results = JSON.parse(JSON.stringify(elements));
 
     if (isNaN(results[results.length - 1]))
         results.pop();
-
     if (results.length == 1)
         return results[0];
 
@@ -146,52 +119,42 @@ function GetResult(){
         let a = results[i-1];
         let operand = results[i]
         let b = results[i + 1];
-        if (results.indexOf("*") > -1 || results.indexOf("/") > -1){
+        if (results.indexOf("*") > -1 || results.indexOf("/") > -1)
+        {
             if (operand == "+" || operand == "-")
+            {
                 i += 2;
-            else
-                results.splice(i-1, 3,  DoCalculate(a, operand, b));
-        } 
-        else
-            results.splice(i-1, 3,  DoCalculate(a, operand, b));
+                continue;
+            }
+        }
+        results.splice(i-1, 3,  DoApply(a, operand, b));
+        i = 1;
     }
-    return results[0];
-
+    return  round(results[0]);
 }
 
-function DoCalculate(a, operand, b){
+function DoApply(a, operand, b){
     a *= 1;
     b *= 1;
-    let r = a;
+    let r = 0;
+
     switch(operand){
         case "+":
-            r = Add(a,b)
+            return  a + b;
             break;
         case "-":
-            r = Subtract(a,b)
+            return a - b;
             break;
         case "/":
-            r = Divide(a,b) 
+            return a / b;
             break;
         case "*":
-            r = Multiply(a, b) 
+            return a *b;
             break;
     }
-     return r;
 }
 
-function Add(a, b){
-    return a + b;
-}
-function Multiply(a, b){
-    return a * b;
-}
-function Subtract(a, b){
-    return a - b;
-}
-function Divide(a, b){
-    return a / b;
-}
-function round(number) {
+function round(number) 
+{
     return Math.round(number * 1000) / 1000;
-  }
+}
